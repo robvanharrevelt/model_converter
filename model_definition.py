@@ -125,6 +125,7 @@ class ModelDefinition(object):
         output.write("Filename =  %s\n" % self.filename)
         output.write("Number of endogenous variables: %d\n" % len(self.endo_dict))
         output.write("Number of exogenous variables: %d\n" % len(self.exo_dict))
+        output.write("Number of lags: %d\n" % len(self.lag_dict))
         output.write("Number of frmls: %d\n" % len(self.frmls))
         output.write("Maximum lag: %d\n" % self.maxlag)
         output.write("Maximum lead: %d\n" % self.maxlead)
@@ -176,7 +177,7 @@ class ModelDefinition(object):
             self._output_expr(eq.rhs)
             rhs = self._output.getvalue()
             self._output.close()
-            lhs = 'x[%d]' % endo_index
+            lhs = 'y[%d]' % endo_index
             if is_frml:
                 frml_index = len(self.frmls)
                 self.frmls.append(eq.lhs)
@@ -196,7 +197,7 @@ class ModelDefinition(object):
 #include <math.h>
 #define max(A, B) ((A) > (B) ? (A) : (B))
 #define min(A, B) ((A) < (B) ? (A) : (B))
-void run_model_c(double* x, double* x2, double *z, double *d, double* a,
+void run_model_c(double* y, double *x, double *d, double* a,
                  int* fix, double* fixval, double *p) {
 """)
         if len(self.frmls) > 0:
@@ -221,9 +222,7 @@ void run_model_c(double* x, double* x2, double *z, double *d, double* a,
         """
         filename = os.path.splitext(self.filename)[0] + ".py"
         output = open(filename, 'w')
-        output.write("""
-def run_model_py(x, x2, z, d, a, fix, fixval, p):
-""")
+        output.write("def run_model_py(y, x, d, a, fix, fixval, p):\n")
         for (lhs_name, frml_index, lhs, rhs) in self.equations:
             if frml_index >= 0:
                 output.write("    rhs = %s\n" % rhs)
@@ -234,6 +233,7 @@ def run_model_py(x, x2, z, d, a, fix, fixval, p):
                 output.write("        %s = rhs + a[%d]\n" % (lhs, frml_index))
             else:
                 output.write("    %s = %s\n" % (lhs, rhs))
+        output.write("    return y")
         output.close()
 
     def _write_r_code(self):
@@ -243,9 +243,7 @@ def run_model_py(x, x2, z, d, a, fix, fixval, p):
 
         filename = os.path.splitext(self.filename)[0] + ".R"
         output = open(filename, 'w')
-        output.write("""
-run_model_r <- function(x, x2, z, d, a, fix, fixval, p) {
-""")
+        output.write("run_model_r <- function(y, x, d, a, fix, fixval, p) {\n")
         for (lhs_name, frml_index, lhs, rhs) in self.equations:
             if frml_index >= 0:
                 output.write("    rhs <- %s;\n" % rhs)
@@ -258,6 +256,7 @@ run_model_r <- function(x, x2, z, d, a, fix, fixval, p) {
                     frml_index + 1))
             else:
                 output.write("    %s <- %s;\n" % (lhs, rhs))
+        output.write("    return (y)\n")
         output.write("}")
         output.close()
 
@@ -275,9 +274,9 @@ run_model_r <- function(x, x2, z, d, a, fix, fixval, p) {
         else:
             var = refr.var
             if var.is_endo:
-                self._output.write("x2[%d]" % self._get_endo_index(refr.name))
+                self._output.write("y[%d]" % self._get_endo_index(refr.name))
             else:
-                self._output.write("z[%d]" % self._get_exo_index(refr.name))
+                self._output.write("x[%d]" % self._get_exo_index(refr.name))
 
     def _output_expr(self, expr):
         if isinstance(expr, Expression):
