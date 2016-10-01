@@ -14,6 +14,9 @@ p <- numeric(14)
 x[2] <- 0.2
 p[] <- 10
 
+system.time(y_new <- run_model_r(y, x, d, a, fix, fixval, p))
+print(y_new)
+
 t <- microbenchmark(y_new <- run_model_r(y, x, d, a, fix, fixval, p))
 print(t)
 print(y_new)

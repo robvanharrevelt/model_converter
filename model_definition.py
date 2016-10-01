@@ -30,13 +30,6 @@ _r_functions = {'exp' : 'exp', 'sqrt' : 'sqrt', 'log' : 'log',
 _python_logical_operators = {'&' : ' and ', '|' : ' or '}
 _c_logical_operators = {'&' : '&&', '|' : '||'}
 
-def _get_index(name, dict):
-    if name in dict:
-        i = dict[name]
-    else:
-        i = len(dict)
-        dict[name] = i
-    return i
 
 class ModelDefinition(object):
 
@@ -46,6 +39,14 @@ class ModelDefinition(object):
     def __init__(self, filename, output_type):
         self.filename =  filename
         self.output_type = output_type
+
+        if output_type == "C" or output_type == "Python":
+            self._index_origin = 0
+        elif output_type == "R" or output_type == "Julia":
+            self._index_origin = 1
+        else:
+            raise RuntimeError("Illegal output type %s\n", output_type)
+
 
         # initialise symbol table and list of equations
         symtab.init()
@@ -102,9 +103,8 @@ class ModelDefinition(object):
             self._write_python_code()
         elif self.output_type == "R":
             self._write_r_code()
-        else:
-            raise RuntimeError("Illegal output type %s\n", self.output_type)
-
+        elif self.output_type == "Julia":
+            self._write_julia_code()
 
     def __str__(self):
         output = io.StringIO()
@@ -143,30 +143,26 @@ class ModelDefinition(object):
         output.close()
         return description
 
-    def _get_endo_index(self, name):
-        if self.output_type == "R":
-            return _get_index(name, self.endo_dict) + 1
+    def _get_index(self, name, dict):
+        if name in dict:
+            i = dict[name]
         else:
-            return _get_index(name, self.endo_dict)
+            i = len(dict)
+            dict[name] = i
+        return i + self._index_origin
+
+    def _get_endo_index(self, name):
+        return self. _get_index(name, self.endo_dict)
 
     def _get_exo_index(self, name):
-        if self.output_type == "R":
-            return _get_index(name, self.exo_dict) + 1
-        else:
-            return _get_index(name, self.exo_dict)
+        return self._get_index(name, self.exo_dict)
 
     def _get_par_index(self, name):
-        if self.output_type == "R":
-            return _get_index(name, self.par_dict) + 1
-        else:
-            return _get_index(name, self.par_dict)
+        return self._get_index(name, self.par_dict) 
 
     def _get_lag_index(self, name, offset):
         lag_var = (name, offset)
-        if self.output_type == "R":
-            return _get_index(lag_var, self.lag_dict) + 1
-        else:
-            return _get_index(lag_var, self.lag_dict)
+        return self._get_index(lag_var, self.lag_dict)
 
     def _generate_equations(self, equations):
         ret = []
@@ -235,8 +231,8 @@ class ModelDefinition(object):
         filename = os.path.splitext(self.filename)[0] + ".py"
         output = open(filename, 'w')
         output.write("import numpy as np\n")
-        output.write("def run_model_py(y_in, x, d, a, fix, fixval, p):\n")
-        output.write("\n    y = np.copy(y_in)\n\n")
+        output.write("def run_model_py(y, y_in, x, d, a, fix, fixval, p):\n")
+        output.write("\n    y[:] = y_in\n\n")
         for (lhs_name, frml_index, lhs, rhs) in self.equations:
             if frml_index >= 0:
                 output.write("    rhs = %s\n" % rhs)
@@ -260,20 +256,44 @@ class ModelDefinition(object):
         output.write("run_model_r <- function(y, x, d, a, fix, fixval, p) {\n")
         for (lhs_name, frml_index, lhs, rhs) in self.equations:
             if frml_index >= 0:
-                output.write("    rhs <- %s;\n" % rhs)
+                output.write("    rhs <- %s\n" % rhs)
                 output.write("    if (fix[%d]) {\n" % (frml_index + 1))
-                output.write("        %s <- fixval[%d];\n" % (lhs, 
+                output.write("        %s <- fixval[%d]\n" % (lhs, 
                                                               frml_index + 1))
-                output.write("        a[%d] <- %s - rhs;\n" % (frml_index + 1, lhs))
+                output.write("        a[%d] <- %s - rhs\n" % (frml_index + 1, lhs))
                 output.write("    } else {\n")
-                output.write("        %s <- rhs + a[%d];\n    }\n" % (lhs,
+                output.write("        %s <- rhs + a[%d]\n    }\n" % (lhs,
                     frml_index + 1))
             else:
-                output.write("    %s <- %s;\n" % (lhs, rhs))
-        output.write("    return (y)\n")
+                output.write("    %s <- %s\n" % (lhs, rhs))
+        output.write("\n    return (y)\n")
         output.write("}")
         output.close()
 
+    def _write_julia_code(self):
+        """
+        Writen Julia code for the model equations
+        """
+
+        filename = os.path.splitext(self.filename)[0] + ".jl"
+        output = open(filename, 'w')
+        output.write("function run_model_julia(y, y_in, x, d, a, fix, fixval, p)\n")
+        output.write("\n    y[:] = y_in\n\n")
+        for (lhs_name, frml_index, lhs, rhs) in self.equations:
+            if frml_index >= 0:
+                output.write("    rhs = %s\n" % rhs)
+                output.write("    if fix[%d]\n" % (frml_index + 1))
+                output.write("        %s = fixval[%d]\n" % (lhs, 
+                                                              frml_index + 1))
+                output.write("        a[%d] = %s - rhs\n" % (frml_index + 1, lhs))
+                output.write("    else\n")
+                output.write("        %s = rhs + a[%d]\n" % (lhs,
+                                                             frml_index + 1))
+                output.write("    end\n")
+            else:
+                output.write("    %s = %s\n" % (lhs, rhs))
+        output.write("end")
+        output.close()
 
     def _output_reference(self, refr):
         if refr.is_param:
@@ -405,6 +425,13 @@ class ModelDefinition(object):
             self._output_expr(expr.condition)
             self._output.write(") else (")
             self._output_expr(expr.else_expression)
+        elif self.output_type == "Julia":
+            self._output_expr(expr.true_expression)
+            self._output.write("if ")
+            self._output_expr(expr.condition)
+            self._output.write("else")
+            self._output_expr(expr.else_expression)
+            self._output_expr("end")
         self._output.write(")")
 
     def __getstate__(self):
