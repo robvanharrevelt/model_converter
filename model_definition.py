@@ -191,17 +191,23 @@ class ModelDefinition(object):
         Write c code for the model equations
         """
 
+        function_header =  \
+"""void run_model_c(double *y, double *y_in, double *x, 
+                 double *d, double* a, int* fix, double* fixval, double *p)""";
+
         filename = os.path.splitext(self.filename)[0] + ".c"
         output = open(filename, 'w')
-        output.write("""
-#include <math.h>
+        output.write("""#include <math.h>
+#include <string.h>
+#include "islm.h"
 #define max(A, B) ((A) > (B) ? (A) : (B))
 #define min(A, B) ((A) < (B) ? (A) : (B))
-void run_model_c(double* y, double *x, double *d, double* a,
-                 int* fix, double* fixval, double *p) {
 """)
+        output.write("#define ENDO_COUNT " + str(len(self.endo_dict)) + "\n\n")
+        output.write(function_header + " {\n\n")
+        output.write("    memcpy(y, y_in, ENDO_COUNT * sizeof(double));\n\n")
         if len(self.frmls) > 0:
-            output.write("    double rhs;\n")
+            output.write("    double rhs;\n\n")
         for (lhs_name, frml_index, lhs, rhs) in self.equations:
             if frml_index >= 0:
                 output.write("    rhs = %s;\n" % rhs)
@@ -215,6 +221,12 @@ void run_model_c(double* y, double *x, double *d, double* a,
         output.write("}")
         output.close()
 
+        # write heade file
+        filename = os.path.splitext(self.filename)[0] + ".h"
+        output = open(filename, 'w')
+        output.write(function_header + ";")
+        output.close()
+
     def _write_python_code(self):
         """
         Generate pure Python code for the current model.
@@ -222,7 +234,9 @@ void run_model_c(double* y, double *x, double *d, double* a,
         """
         filename = os.path.splitext(self.filename)[0] + ".py"
         output = open(filename, 'w')
-        output.write("def run_model_py(y, x, d, a, fix, fixval, p):\n")
+        output.write("import numpy as np\n")
+        output.write("def run_model_py(y_in, x, d, a, fix, fixval, p):\n")
+        output.write("\n    y = np.copy(y_in)\n\n")
         for (lhs_name, frml_index, lhs, rhs) in self.equations:
             if frml_index >= 0:
                 output.write("    rhs = %s\n" % rhs)
@@ -233,7 +247,7 @@ void run_model_c(double* y, double *x, double *d, double* a,
                 output.write("        %s = rhs + a[%d]\n" % (lhs, frml_index))
             else:
                 output.write("    %s = %s\n" % (lhs, rhs))
-        output.write("    return y")
+        output.write("\n    return y")
         output.close()
 
     def _write_r_code(self):

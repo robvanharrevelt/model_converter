@@ -1,5 +1,6 @@
 islm.R
 islm.c
+islm.h
 islm.py
 test.x
 .ipynb_checkpoints
