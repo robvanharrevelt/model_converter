@@ -42,7 +42,8 @@ class ModelDefinition(object):
 
         if output_type == "C" or output_type == "Python":
             self._index_origin = 0
-        elif output_type == "R" or output_type == "Julia":
+        elif output_type == "R" or output_type == "Julia" \
+                or output_type == "Matlab":
             self._index_origin = 1
         else:
             raise RuntimeError("Illegal output type %s\n", output_type)
@@ -105,6 +106,8 @@ class ModelDefinition(object):
             self._write_r_code()
         elif self.output_type == "Julia":
             self._write_julia_code()
+        elif self.output_type == "Matlab":
+            self._write_matlab_code()
 
     def __str__(self):
         output = io.StringIO()
@@ -173,7 +176,10 @@ class ModelDefinition(object):
             self._output_expr(eq.rhs)
             rhs = self._output.getvalue()
             self._output.close()
-            lhs = 'y[%d]' % endo_index
+            if self.output_type == "Matlab":
+                lhs = 'y(%d)' % endo_index
+            else:
+                lhs = 'y[%d]' % endo_index
             if is_frml:
                 frml_index = len(self.frmls)
                 self.frmls.append(eq.lhs)
@@ -192,13 +198,14 @@ class ModelDefinition(object):
                  double *d, double* a, int* fix, double* fixval, double *p)""";
 
         filename = os.path.splitext(self.filename)[0] + ".c"
+        header = os.path.basename((os.path.splitext(self.filename))[0]) + ".h"
         output = open(filename, 'w')
         output.write("""#include <math.h>
 #include <string.h>
-#include "islm.h"
 #define max(A, B) ((A) > (B) ? (A) : (B))
 #define min(A, B) ((A) < (B) ? (A) : (B))
 """)
+        output.write("#include \"" + header + "\"\n")
         output.write("#define ENDO_COUNT " + str(len(self.endo_dict)) + "\n\n")
         output.write(function_header + " {\n\n")
         output.write("    memcpy(y, y_in, ENDO_COUNT * sizeof(double));\n\n")
@@ -295,11 +302,44 @@ class ModelDefinition(object):
         output.write("end")
         output.close()
 
+    def _write_matlab_code(self):
+        """
+        Writen Matlab code for the model equations
+        """
+
+        filename = os.path.splitext(self.filename)[0] + ".m"
+        function_name = os.path.basename((os.path.splitext(self.filename))[0])
+        output = open(filename, 'w')
+        output.write("function y = " + function_name + 
+                      "(y_in, x, d, a, fix, fixval, p)\n")
+        output.write("\n    y = y_in;\n\n")
+        for (lhs_name, frml_index, lhs, rhs) in self.equations:
+            if frml_index >= 0:
+                output.write("    rhs = %s;\n" % rhs)
+                output.write("    if fix(%d)\n" % (frml_index + 1))
+                output.write("        %s = fixval(%d);\n" % (lhs, 
+                                                              frml_index + 1))
+                output.write("        a(%d) = %s - rhs;\n" % (frml_index + 1, lhs))
+                output.write("    else\n")
+                output.write("        %s = rhs + a(%d);\n" % (lhs,
+                                                             frml_index + 1))
+                output.write("    end\n")
+            else:
+                output.write("    %s = %s;\n" % (lhs, rhs))
+        output.write("end")
+        output.close()
+
+
     def _output_reference(self, refr):
+        if self.output_type == "Matlab":
+            index_expr = "(%d)"
+        else:
+            index_expr = "[%d]"
+        index_expr 
         if refr.is_param:
-            self._output.write("p[%d]" % self._get_par_index(refr.name))
+            self._output.write("p" + index_expr % self._get_par_index(refr.name))
         elif refr.offset != 0:
-            self._output.write("d[%d]" % self._get_lag_index(refr.name,
+            self._output.write("d" + index_expr % self._get_lag_index(refr.name,
                                                              refr.offset))
             if refr.offset < 0:
                 self.maxlag = max(self.maxlag, -refr.offset)
@@ -308,9 +348,11 @@ class ModelDefinition(object):
         else:
             var = refr.var
             if var.is_endo:
-                self._output.write("y[%d]" % self._get_endo_index(refr.name))
+                self._output.write("y" + index_expr % 
+                                   self._get_endo_index(refr.name))
             else:
-                self._output.write("x[%d]" % self._get_exo_index(refr.name))
+                self._output.write("x" + index_expr  % 
+                                   self._get_exo_index(refr.name))
 
     def _output_expr(self, expr):
         if isinstance(expr, Expression):
@@ -425,7 +467,7 @@ class ModelDefinition(object):
             self._output_expr(expr.condition)
             self._output.write(") else (")
             self._output_expr(expr.else_expression)
-        elif self.output_type == "Julia":
+        elif self.output_type == "Julia" or self.output_type == "Matlab":
             self._output_expr(expr.true_expression)
             self._output.write("if ")
             self._output_expr(expr.condition)

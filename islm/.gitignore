@@ -3,5 +3,6 @@ islm.c
 islm.h
 islm.py
 islm.jl
+islm.m
 test.x
 .ipynb_checkpoints
