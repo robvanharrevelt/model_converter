@@ -22,7 +22,7 @@ int main(void) {
     diff = clock() - start;
 
 
-    double sum;
+    double sum = 0;
     for (i = 0; i < 7; i++) {
         sum = sum + y[i];
     }

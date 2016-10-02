@@ -7,7 +7,7 @@
 int main(void) {
     double y[3500], y_in[3500] = {0}, x[1000]= {0}, d[1500] = {0}, 
            a[2000] = {0},  fixval[2000] = {0}, p[14] = {10};
-    int fix[4] = {0};
+    int fix[2000] = {0};
 
     int i;
     for (i = 0; i < 14; i++) {

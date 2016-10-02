@@ -1,1 +1,1 @@
-gcc -O2 test.c big_islm.c -o test.x
+gcc -O0 test.c big_islm.c -o test.x
