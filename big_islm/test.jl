@@ -13,18 +13,20 @@ p = 10 * ones(14)
 
 x[500:1000] = 0.2
 
+@time (zzz = 1)
+
 # the results of the first call of @time should not be taken seriously
 @time (run_model_julia(y, y_in, x, d, a, fix, fixval, p))
 
 @time (run_model_julia(y, y_in, x, d, a, fix, fixval, p))
 
-@time (for i = 1:1
+@time (for i = 1:1000
            run_model_julia(y, y_in, x, d, a, fix, fixval, p)
        end)
 println(sum(y))
 
 tic()
-for i = 1:1
+for i = 1:1000
     run_model_julia(y, y_in, x, d, a, fix, fixval, p)
 end
 toc()

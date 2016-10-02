@@ -2,7 +2,7 @@
 #include <time.h>
 #include "big_islm.h"
 
-#define REP 1
+#define REP 1000
 
 int main(void) {
     double y[3500], y_in[3500] = {0}, x[1000]= {0}, d[1500] = {0}, 

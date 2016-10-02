@@ -22,10 +22,7 @@ print(t)
 
 print(sum(y_new))
 
-quit()
-
-run_model_r2 <- cmpfun(run_model_r, options = list(optimize =  0))
-
+system.time(run_model_r2 <- cmpfun(run_model_r, options = list(optimize =  0)))
 print("bytecode generated")
 
 t <- microbenchmark(y_new <- run_model_r2(y, x, d, a, fix, fixval, p))
@@ -33,8 +30,7 @@ print(t)
 
 print(sum(y_new))
 
-run_model_r3 <- cmpfun(run_model_r, options = list(optimize =  1))
-
+system.time(run_model_r3 <- cmpfun(run_model_r, options = list(optimize =  1)))
 print("bytecode generated")
 
 t <- microbenchmark(y_new <- run_model_r3(y, x, d, a, fix, fixval, p))
@@ -42,15 +38,13 @@ print(t)
 
 print(sum(y_new))
 
-run_model_r4 <- cmpfun(run_model_r, options = list(optimize =  2))
-
+system.time(run_model_r4 <- cmpfun(run_model_r, options = list(optimize =  2)))
 print("bytecode generated")
 
 t <- microbenchmark(y_new <- run_model_r4(y, x, d, a, fix, fixval, p))
 print(t)
 
-run_model_r5 <- cmpfun(run_model_r, options = list(optimize =  3))
-
+system.time(run_model_r5 <- cmpfun(run_model_r, options = list(optimize =  3)))
 print("bytecode generated")
 
 t <- microbenchmark(y_new <- run_model_r5(y, x, d, a, fix, fixval, p))

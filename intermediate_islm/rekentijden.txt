@@ -1,0 +1,14 @@
+opmerkingen: voor alle talen behalve voor c is de compilatietijd 
+gemeten door de tijd die de functieevauatie de eerste kost te meten.
+
+alle testen zijn uitgevoerd m.u.v. matlab. matlab draait op de applicatieserver,
+mar deze is vergelijkbaar met de ontwikkelserver.
+
+             compileren    draaien
+C            0,4 s         0,37 mus (microseconds
+Julia        2 s           0,5 mus (microseconden)
+Python       ?            146 mus
+Octave       0,018 s      2450 mus
+Matlab       0,072 s      124,5 mus
+R            ?            532 mus
+R bytecode   1 s          41 mus

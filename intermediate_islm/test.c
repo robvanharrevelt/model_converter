@@ -2,7 +2,7 @@
 #include <time.h>
 #include "intermediate_islm.h"
 
-#define REP 1000
+#define REP 1e6
 
 int main(void) {
     double y[140], y_in[140] = {0}, x[40]= {0}, d[60] = {0}, a[80] = {0},  
@@ -23,12 +23,11 @@ int main(void) {
     }
     diff = clock() - start;
 
-
     double sum = 0;
     for (i = 0; i < 140; i++) {
         sum = sum + y[i];
     }
     printf("sum = %g\n", sum);
-    double msec = 1e6 * diff / (REP * CLOCKS_PER_SEC);
+    double msec = 1.0e6 * diff / (REP * CLOCKS_PER_SEC * 1.0);
     printf("Time taken  in microseconds %g\n", msec);
 }

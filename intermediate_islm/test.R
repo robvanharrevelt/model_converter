@@ -1,7 +1,9 @@
 library(microbenchmark)
 library(compiler)
 
+system.time(
 source("intermediate_islm.R")
+)
 
 y <- numeric(140)
 x <- numeric(40)
@@ -14,15 +16,20 @@ p <- numeric(14)
 x[21:40] <- 0.2
 p[] <- 10
 
-system.time(y_new <- run_model_r(y, x, d, a, fix, fixval, p))
+t <- microbenchmark(y_new <- run_model_r(y, x, d, a, fix, fixval, p),
+                    times = 1)
+print(t)
+
+t <- microbenchmark(y_new <- run_model_r(y, x, d, a, fix, fixval, p),
+                    times = 1)
+print(t)
 print(sum(y_new))
 
 t <- microbenchmark(y_new <- run_model_r(y, x, d, a, fix, fixval, p))
 print(t)
-
 print(sum(y_new))
 
-run_model_r2 <- cmpfun(run_model_r)
+system.time(run_model_r2 <- cmpfun(run_model_r))
 
 t <- microbenchmark(y_new <- run_model_r2(y, x, d, a, fix, fixval, p))
 print(t)
