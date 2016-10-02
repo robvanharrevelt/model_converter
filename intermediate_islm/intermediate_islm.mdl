@@ -1,0 +1,175 @@
+param c0 100 c1 0.7 c2 20 c3 0.5;
+param i0 100 i1 0.2 i2 40 i3 1.5 i4 0.1;
+param m0 75 m1 0.23 m2 35 m3 1.5;
+param t0 -15 t1 0.22;
+frml t_1 = t0 + t1 * y_1;
+frml t_2 = t0 + t1 * y_2;
+frml t_3 = t0 + t1 * y_3;
+frml t_4 = t0 + t1 * y_4;
+frml t_5 = t0 + t1 * y_5;
+frml t_6 = t0 + t1 * y_6;
+frml t_7 = t0 + t1 * y_7;
+frml t_8 = t0 + t1 * y_8;
+frml t_9 = t0 + t1 * y_9;
+frml t_10 = t0 + t1 * y_10;
+frml t_11 = t0 + t1 * y_11;
+frml t_12 = t0 + t1 * y_12;
+frml t_13 = t0 + t1 * y_13;
+frml t_14 = t0 + t1 * y_14;
+frml t_15 = t0 + t1 * y_15;
+frml t_16 = t0 + t1 * y_16;
+frml t_17 = t0 + t1 * y_17;
+frml t_18 = t0 + t1 * y_18;
+frml t_19 = t0 + t1 * y_19;
+frml t_20 = t0 + t1 * y_20;
+ident yd_1 = y_1 - t_1;
+ident yd_2 = y_2 - t_2;
+ident yd_3 = y_3 - t_3;
+ident yd_4 = y_4 - t_4;
+ident yd_5 = y_5 - t_5;
+ident yd_6 = y_6 - t_6;
+ident yd_7 = y_7 - t_7;
+ident yd_8 = y_8 - t_8;
+ident yd_9 = y_9 - t_9;
+ident yd_10 = y_10 - t_10;
+ident yd_11 = y_11 - t_11;
+ident yd_12 = y_12 - t_12;
+ident yd_13 = y_13 - t_13;
+ident yd_14 = y_14 - t_14;
+ident yd_15 = y_15 - t_15;
+ident yd_16 = y_16 - t_16;
+ident yd_17 = y_17 - t_17;
+ident yd_18 = y_18 - t_18;
+ident yd_19 = y_19 - t_19;
+ident yd_20 = y_20 - t_20;
+frml c_1 = c0 + c1 * (0.9 * yd_1 + 0.1 * yd_1[-1]) - c2 * r_1 + c3 * r_1*r_1;
+frml c_2 = c0 + c1 * (0.9 * yd_2 + 0.1 * yd_2[-1]) - c2 * r_2 + c3 * r_2*r_2;
+frml c_3 = c0 + c1 * (0.9 * yd_3 + 0.1 * yd_3[-1]) - c2 * r_3 + c3 * r_3*r_3;
+frml c_4 = c0 + c1 * (0.9 * yd_4 + 0.1 * yd_4[-1]) - c2 * r_4 + c3 * r_4*r_4;
+frml c_5 = c0 + c1 * (0.9 * yd_5 + 0.1 * yd_5[-1]) - c2 * r_5 + c3 * r_5*r_5;
+frml c_6 = c0 + c1 * (0.9 * yd_6 + 0.1 * yd_6[-1]) - c2 * r_6 + c3 * r_6*r_6;
+frml c_7 = c0 + c1 * (0.9 * yd_7 + 0.1 * yd_7[-1]) - c2 * r_7 + c3 * r_7*r_7;
+frml c_8 = c0 + c1 * (0.9 * yd_8 + 0.1 * yd_8[-1]) - c2 * r_8 + c3 * r_8*r_8;
+frml c_9 = c0 + c1 * (0.9 * yd_9 + 0.1 * yd_9[-1]) - c2 * r_9 + c3 * r_9*r_9;
+frml c_10 = c0 + c1 * (0.9 * yd_10 + 0.1 * yd_10[-1]) - c2 * r_10 + c3 * r_10
+ *r_10;
+frml c_11 = c0 + c1 * (0.9 * yd_11 + 0.1 * yd_11[-1]) - c2 * r_11 + c3 * r_11
+ *r_11;
+frml c_12 = c0 + c1 * (0.9 * yd_12 + 0.1 * yd_12[-1]) - c2 * r_12 + c3 * r_12
+ *r_12;
+frml c_13 = c0 + c1 * (0.9 * yd_13 + 0.1 * yd_13[-1]) - c2 * r_13 + c3 * r_13
+ *r_13;
+frml c_14 = c0 + c1 * (0.9 * yd_14 + 0.1 * yd_14[-1]) - c2 * r_14 + c3 * r_14
+ *r_14;
+frml c_15 = c0 + c1 * (0.9 * yd_15 + 0.1 * yd_15[-1]) - c2 * r_15 + c3 * r_15
+ *r_15;
+frml c_16 = c0 + c1 * (0.9 * yd_16 + 0.1 * yd_16[-1]) - c2 * r_16 + c3 * r_16
+ *r_16;
+frml c_17 = c0 + c1 * (0.9 * yd_17 + 0.1 * yd_17[-1]) - c2 * r_17 + c3 * r_17
+ *r_17;
+frml c_18 = c0 + c1 * (0.9 * yd_18 + 0.1 * yd_18[-1]) - c2 * r_18 + c3 * r_18
+ *r_18;
+frml c_19 = c0 + c1 * (0.9 * yd_19 + 0.1 * yd_19[-1]) - c2 * r_19 + c3 * r_19
+ *r_19;
+frml c_20 = c0 + c1 * (0.9 * yd_20 + 0.1 * yd_20[-1]) - c2 * r_20 + c3 * r_20
+ *r_20;
+frml i_1 = i0 + i1 * (0.2 * y_1 + 0.8 * y_1[-1]) - i2 * r_1[-1] + i3 * r_1[-1]
+ *r_1[-1];
+frml i_2 = i0 + i1 * (0.2 * y_2 + 0.8 * y_2[-1]) - i2 * r_2[-1] + i3 * r_2[-1]
+ *r_2[-1];
+frml i_3 = i0 + i1 * (0.2 * y_3 + 0.8 * y_3[-1]) - i2 * r_3[-1] + i3 * r_3[-1]
+ *r_3[-1];
+frml i_4 = i0 + i1 * (0.2 * y_4 + 0.8 * y_4[-1]) - i2 * r_4[-1] + i3 * r_4[-1]
+ *r_4[-1];
+frml i_5 = i0 + i1 * (0.2 * y_5 + 0.8 * y_5[-1]) - i2 * r_5[-1] + i3 * r_5[-1]
+ *r_5[-1];
+frml i_6 = i0 + i1 * (0.2 * y_6 + 0.8 * y_6[-1]) - i2 * r_6[-1] + i3 * r_6[-1]
+ *r_6[-1];
+frml i_7 = i0 + i1 * (0.2 * y_7 + 0.8 * y_7[-1]) - i2 * r_7[-1] + i3 * r_7[-1]
+ *r_7[-1];
+frml i_8 = i0 + i1 * (0.2 * y_8 + 0.8 * y_8[-1]) - i2 * r_8[-1] + i3 * r_8[-1]
+ *r_8[-1];
+frml i_9 = i0 + i1 * (0.2 * y_9 + 0.8 * y_9[-1]) - i2 * r_9[-1] + i3 * r_9[-1]
+ *r_9[-1];
+frml i_10 = i0 + i1 * (0.2 * y_10 + 0.8 * y_10[-1]) - i2 * r_10[-1] + i3 * r_10
+ [-1]*r_10[-1];
+frml i_11 = i0 + i1 * (0.2 * y_11 + 0.8 * y_11[-1]) - i2 * r_11[-1] + i3 * r_11
+ [-1]*r_11[-1];
+frml i_12 = i0 + i1 * (0.2 * y_12 + 0.8 * y_12[-1]) - i2 * r_12[-1] + i3 * r_12
+ [-1]*r_12[-1];
+frml i_13 = i0 + i1 * (0.2 * y_13 + 0.8 * y_13[-1]) - i2 * r_13[-1] + i3 * r_13
+ [-1]*r_13[-1];
+frml i_14 = i0 + i1 * (0.2 * y_14 + 0.8 * y_14[-1]) - i2 * r_14[-1] + i3 * r_14
+ [-1]*r_14[-1];
+frml i_15 = i0 + i1 * (0.2 * y_15 + 0.8 * y_15[-1]) - i2 * r_15[-1] + i3 * r_15
+ [-1]*r_15[-1];
+frml i_16 = i0 + i1 * (0.2 * y_16 + 0.8 * y_16[-1]) - i2 * r_16[-1] + i3 * r_16
+ [-1]*r_16[-1];
+frml i_17 = i0 + i1 * (0.2 * y_17 + 0.8 * y_17[-1]) - i2 * r_17[-1] + i3 * r_17
+ [-1]*r_17[-1];
+frml i_18 = i0 + i1 * (0.2 * y_18 + 0.8 * y_18[-1]) - i2 * r_18[-1] + i3 * r_18
+ [-1]*r_18[-1];
+frml i_19 = i0 + i1 * (0.2 * y_19 + 0.8 * y_19[-1]) - i2 * r_19[-1] + i3 * r_19
+ [-1]*r_19[-1];
+frml i_20 = i0 + i1 * (0.2 * y_20 + 0.8 * y_20[-1]) - i2 * r_20[-1] + i3 * r_20
+ [-1]*r_20[-1];
+frml md_1 = m0 + m1 * y_1 - m2 * r_1 + m3 * r_1*r_1;
+frml md_2 = m0 + m1 * y_2 - m2 * r_2 + m3 * r_2*r_2;
+frml md_3 = m0 + m1 * y_3 - m2 * r_3 + m3 * r_3*r_3;
+frml md_4 = m0 + m1 * y_4 - m2 * r_4 + m3 * r_4*r_4;
+frml md_5 = m0 + m1 * y_5 - m2 * r_5 + m3 * r_5*r_5;
+frml md_6 = m0 + m1 * y_6 - m2 * r_6 + m3 * r_6*r_6;
+frml md_7 = m0 + m1 * y_7 - m2 * r_7 + m3 * r_7*r_7;
+frml md_8 = m0 + m1 * y_8 - m2 * r_8 + m3 * r_8*r_8;
+frml md_9 = m0 + m1 * y_9 - m2 * r_9 + m3 * r_9*r_9;
+frml md_10 = m0 + m1 * y_10 - m2 * r_10 + m3 * r_10*r_10;
+frml md_11 = m0 + m1 * y_11 - m2 * r_11 + m3 * r_11*r_11;
+frml md_12 = m0 + m1 * y_12 - m2 * r_12 + m3 * r_12*r_12;
+frml md_13 = m0 + m1 * y_13 - m2 * r_13 + m3 * r_13*r_13;
+frml md_14 = m0 + m1 * y_14 - m2 * r_14 + m3 * r_14*r_14;
+frml md_15 = m0 + m1 * y_15 - m2 * r_15 + m3 * r_15*r_15;
+frml md_16 = m0 + m1 * y_16 - m2 * r_16 + m3 * r_16*r_16;
+frml md_17 = m0 + m1 * y_17 - m2 * r_17 + m3 * r_17*r_17;
+frml md_18 = m0 + m1 * y_18 - m2 * r_18 + m3 * r_18*r_18;
+frml md_19 = m0 + m1 * y_19 - m2 * r_19 + m3 * r_19*r_19;
+frml md_20 = m0 + m1 * y_20 - m2 * r_20 + m3 * r_20*r_20;
+ident y_1 = c_1 + i_1 + g_1;
+ident y_2 = c_2 + i_2 + g_2;
+ident y_3 = c_3 + i_3 + g_3;
+ident y_4 = c_4 + i_4 + g_4;
+ident y_5 = c_5 + i_5 + g_5;
+ident y_6 = c_6 + i_6 + g_6;
+ident y_7 = c_7 + i_7 + g_7;
+ident y_8 = c_8 + i_8 + g_8;
+ident y_9 = c_9 + i_9 + g_9;
+ident y_10 = c_10 + i_10 + g_10;
+ident y_11 = c_11 + i_11 + g_11;
+ident y_12 = c_12 + i_12 + g_12;
+ident y_13 = c_13 + i_13 + g_13;
+ident y_14 = c_14 + i_14 + g_14;
+ident y_15 = c_15 + i_15 + g_15;
+ident y_16 = c_16 + i_16 + g_16;
+ident y_17 = c_17 + i_17 + g_17;
+ident y_18 = c_18 + i_18 + g_18;
+ident y_19 = c_19 + i_19 + g_19;
+ident y_20 = c_20 + i_20 + g_20;
+ident r_1 = r_1 + (ms_1 - md_1) / ms_1;
+ident r_2 = r_2 + (ms_2 - md_2) / ms_2;
+ident r_3 = r_3 + (ms_3 - md_3) / ms_3;
+ident r_4 = r_4 + (ms_4 - md_4) / ms_4;
+ident r_5 = r_5 + (ms_5 - md_5) / ms_5;
+ident r_6 = r_6 + (ms_6 - md_6) / ms_6;
+ident r_7 = r_7 + (ms_7 - md_7) / ms_7;
+ident r_8 = r_8 + (ms_8 - md_8) / ms_8;
+ident r_9 = r_9 + (ms_9 - md_9) / ms_9;
+ident r_10 = r_10 + (ms_10 - md_10) / ms_10;
+ident r_11 = r_11 + (ms_11 - md_11) / ms_11;
+ident r_12 = r_12 + (ms_12 - md_12) / ms_12;
+ident r_13 = r_13 + (ms_13 - md_13) / ms_13;
+ident r_14 = r_14 + (ms_14 - md_14) / ms_14;
+ident r_15 = r_15 + (ms_15 - md_15) / ms_15;
+ident r_16 = r_16 + (ms_16 - md_16) / ms_16;
+ident r_17 = r_17 + (ms_17 - md_17) / ms_17;
+ident r_18 = r_18 + (ms_18 - md_18) / ms_18;
+ident r_19 = r_19 + (ms_19 - md_19) / ms_19;
+ident r_20 = r_20 + (ms_20 - md_20) / ms_20;

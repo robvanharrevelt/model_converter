@@ -58,8 +58,11 @@ def p_sign(p):
 def p_signed_integer(p):
     """signed_integer : INTEGER
                       | sign INTEGER"""
-    if len(p) == 3 and p[1] == '-':
-        p[0] = -p[2]
+    if len(p) == 3:
+        if p[1] == '-':
+            p[0] = -p[2]
+        else:
+            p[0] = p[2]
     else:
         p[0] = p[1]
 

@@ -1,0 +1,15 @@
+param c0 100 c1 0.7  c2 20 c3 0.5;
+param i0 100 i1 0.2  i2 40 i3 1.5 i4 0.1;
+param m0  75 m1 0.23 m2 35 m3 1.5;
+param t0 -15 t1 0.22;
+
+$expa(NR; 1/20)
+frml t_NR = t0 + t1 * y_NR;
+ident yd_NR = y_NR - t_NR;
+frml c_NR = c0 + c1 * (0.9 * yd_NR + 0.1 * yd_NR[-1]) - c2 * r_NR + c3 * r_NR*r_NR;
+frml i_NR = i0 + i1 * (0.2 * y_NR + 0.8 * y_NR[-1]) - i2 * r_NR[-1] + 
+            i3 * r_NR[-1]*r_NR[-1];
+frml md_NR = m0 + m1 * y_NR - m2 * r_NR + m3 * r_NR*r_NR;
+
+ident y_NR = c_NR + i_NR + g_NR;
+ident r_NR = r_NR + (ms_NR - md_NR) / ms_NR;
