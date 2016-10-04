@@ -4,11 +4,14 @@ gemeten door de tijd die de functieevauatie de eerste kost te meten.
 alle testen zijn uitgevoerd m.u.v. matlab. matlab draait op de applicatieserver,
 mar deze is vergelijkbaar met de ontwikkelserver.
 
-             compileren    draaien
-C            11,780 s         0,16 ms
-Julia        1190 s        0,072 ms  (? controleren)
-Python       ?             3,65 ms
-Octave       0,37 s        65 ms
-Matlab       0,072 s       1,77 ms
-R            ?             15,8 ms
-R bytecode   165  s        1,24 ms      
+             compileren   draaien
+C            16,58 s        0,13 ms
+Julia        1190 s         0,072 ms  (? controleren)
+Python       ~ 0           14,5 ms
+Octave       1,45 s       247,8 ms
+Matlab       9,23 s *)    2067 ms *)
+R            ~0            67,6 ms
+R bytecode   165  s        1,24 ms   
+
+*) ik vermoed dat de applicatieservers overbelast was. Later opnieuw meten
+als de servers wat rustiger zijn.

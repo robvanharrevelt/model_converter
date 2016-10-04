@@ -7,8 +7,8 @@ mar deze is vergelijkbaar met de ontwikkelserver.
              compileren    draaien
 C            0,4 s         0,37 mus (microseconds
 Julia        2 s           0,5 mus (microseconden)
-Python       ?            146 mus
+Python       ~ 0           146 mus
 Octave       0,018 s      2450 mus
 Matlab       0,072 s      124,5 mus
-R            ?            532 mus
+R            ~ 0 s        532 mus
 R bytecode   1 s          41 mus

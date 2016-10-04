@@ -7,8 +7,8 @@ mar deze is vergelijkbaar met de ontwikkelserver.
              compileren    draaien
 C            8,09 s         0,036 ms
 Julia        1190 s        0,072 ms  (? controleren)
-Python       ?             3,65 ms
+Python       ~0             3,65 ms
 Octave       0,37 s        65 ms
 Matlab       0,072 s       1,77 ms
-R            ?             15,8 ms
+R            ~0             15,8 ms
 R bytecode   165  s        1,24 ms      

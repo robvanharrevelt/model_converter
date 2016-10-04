@@ -15,13 +15,12 @@ x[2001:4000] <- 0.2
 p[] <- 10
 
 system.time(y_new <- run_model_r(y, x, d, a, fix, fixval, p))
+system.time(y_new <- run_model_r(y, x, d, a, fix, fixval, p))
 print(sum(y_new))
 
 t <- microbenchmark(y_new <- run_model_r(y, x, d, a, fix, fixval, p))
 print(t)
-
 print(sum(y_new))
-quit()
 
 system.time(run_model_r2 <- cmpfun(run_model_r, options = list(optimize =  0)))
 print("bytecode generated")
