@@ -1,17 +1,17 @@
 library(microbenchmark)
 library(compiler)
 
-source("big_islm.R")
+source("huge_islm.R")
 
-y <- numeric(3500)
-x <- numeric(1000)
-d <- numeric(1500)
-a <- numeric(2000)
-fix <- numeric(2000)
-fixval <- numeric(2000)
+y <- numeric(14000)
+x <- numeric(4000)
+d <- numeric(6000)
+a <- numeric(8000)
+fix <- numeric(8000)
+fixval <- numeric(8000)
 p <- numeric(14)
 
-x[501:1000] <- 0.2
+x[2001:4000] <- 0.2
 p[] <- 10
 
 system.time(y_new <- run_model_r(y, x, d, a, fix, fixval, p))
@@ -21,6 +21,7 @@ t <- microbenchmark(y_new <- run_model_r(y, x, d, a, fix, fixval, p))
 print(t)
 
 print(sum(y_new))
+quit()
 
 system.time(run_model_r2 <- cmpfun(run_model_r, options = list(optimize =  0)))
 print("bytecode generated")

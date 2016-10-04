@@ -30,6 +30,7 @@ print(t)
 print(sum(y_new))
 
 system.time(run_model_r2 <- cmpfun(run_model_r))
+save(run_model_r2, file = "run_model_r2.Rdata")
 
 t <- microbenchmark(y_new <- run_model_r2(y, x, d, a, fix, fixval, p))
 print(t)

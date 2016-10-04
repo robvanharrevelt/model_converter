@@ -6,7 +6,7 @@ fix = zeros(2000, 1 );
 fixval = zeros(2000, 1);
 p = 10 * ones(14, 1);
 
-x(500:1000) = 0.2;
+x(501:1000) = 0.2;
 
 tic()
 y = big_islm(y_in, x, d, a, fix, fixval, p);
